@@ -42,7 +42,7 @@ export default async function TaskBoardPage() {
                 <span className="text-xs text-gray-400">{colTasks.length}</span>
               </div>
               {colTasks.map(task => (
-                <div key={task.id} className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 space-y-2">
+                <div key={task.id} className="card p-4 space-y-2">
                   <p className="font-medium text-sm text-gray-900">{task.title}</p>
                   {task.description && <p className="text-xs text-gray-500 line-clamp-2">{task.description}</p>}
                   <div className="flex items-center justify-between">

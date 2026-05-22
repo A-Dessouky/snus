@@ -33,7 +33,7 @@ export default async function DocumentsPage() {
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-gray-900">Chapter Documents</h1>
         {isExec && (
-          <button className="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg text-sm font-medium transition-colors">
+          <button className="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-full text-sm font-medium transition-colors">
             + Upload
           </button>
         )}
@@ -44,7 +44,7 @@ export default async function DocumentsPage() {
         return (
           <section key={cat} className="space-y-2">
             <h2 className="text-xs font-semibold uppercase tracking-wider text-gray-500">{cat}</h2>
-            <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden divide-y divide-gray-100">
+            <div className="card overflow-hidden divide-y divide-gray-100">
               {catDocs.map(doc => (
                 <div key={doc.id} className="flex items-center gap-4 px-4 py-3">
                   <FileText className="w-5 h-5 text-gray-400 shrink-0" />

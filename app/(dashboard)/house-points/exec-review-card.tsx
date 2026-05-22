@@ -38,7 +38,7 @@ export function ExecReviewCard({ request, execProfileId }: Props) {
   const memberName = request.member?.full_name ?? request.member?.email ?? 'Unknown'
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 space-y-3">
+    <div className="card p-4 space-y-3">
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="font-medium text-sm text-gray-900">{memberName}</p>
@@ -61,14 +61,14 @@ export function ExecReviewCard({ request, execProfileId }: Props) {
         <button
           onClick={handleApprove}
           disabled={pending}
-          className="px-3 py-1.5 bg-green-100 hover:bg-green-200 text-green-700 rounded-lg text-xs font-semibold disabled:opacity-50 transition-colors"
+          className="px-3 py-1.5 bg-green-100 hover:bg-green-200 text-green-700 rounded-full text-xs font-semibold disabled:opacity-50 transition-colors"
         >
           Approve
         </button>
         <button
           onClick={handleDeny}
           disabled={pending}
-          className="px-3 py-1.5 bg-red-100 hover:bg-red-200 text-red-700 rounded-lg text-xs font-semibold disabled:opacity-50 transition-colors"
+          className="px-3 py-1.5 bg-red-100 hover:bg-red-200 text-red-700 rounded-full text-xs font-semibold disabled:opacity-50 transition-colors"
         >
           Deny
         </button>

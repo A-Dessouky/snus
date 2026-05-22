@@ -36,7 +36,7 @@ export function ExecHoursReviewCard({ request, execProfileId }: Props) {
   }
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 space-y-3">
+    <div className="card p-4 space-y-3">
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="font-medium text-sm text-gray-900">{request.member?.full_name ?? request.member?.email ?? 'Unknown'}</p>
@@ -57,10 +57,10 @@ export function ExecHoursReviewCard({ request, execProfileId }: Props) {
             className="w-20 border border-gray-300 rounded-lg px-2 py-1 text-sm text-center focus:outline-none focus:ring-2 focus:ring-yellow-400"
           />
         </div>
-        <button onClick={handleApprove} disabled={pending} className="px-3 py-1.5 bg-green-100 hover:bg-green-200 text-green-700 rounded-lg text-xs font-semibold disabled:opacity-50">
+        <button onClick={handleApprove} disabled={pending} className="px-3 py-1.5 bg-green-100 hover:bg-green-200 text-green-700 rounded-full text-xs font-semibold disabled:opacity-50">
           Approve
         </button>
-        <button onClick={handleDeny} disabled={pending} className="px-3 py-1.5 bg-red-100 hover:bg-red-200 text-red-700 rounded-lg text-xs font-semibold disabled:opacity-50">
+        <button onClick={handleDeny} disabled={pending} className="px-3 py-1.5 bg-red-100 hover:bg-red-200 text-red-700 rounded-full text-xs font-semibold disabled:opacity-50">
           Deny
         </button>
       </div>

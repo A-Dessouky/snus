@@ -162,7 +162,7 @@ export default async function HomePage() {
       {/* ── Stat cards ── */}
       <div className="grid grid-cols-3 gap-4">
         {/* Rank */}
-        <Link href="/house-points" className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 hover:shadow-md transition-all">
+        <Link href="/house-points" className="card p-4 hover:shadow-md transition-all">
           <Trophy className="w-5 h-5 text-gray-400 mb-3" />
           <p className="text-2xl font-bold text-gray-900">
             {myRank > 0 ? `#${myRank}` : '—'}
@@ -173,14 +173,14 @@ export default async function HomePage() {
         </Link>
 
         {/* Philanthropy */}
-        <Link href="/philanthropy" className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 hover:shadow-md transition-all">
+        <Link href="/philanthropy" className="card p-4 hover:shadow-md transition-all">
           <Heart className="w-5 h-5 text-gray-400 mb-3" />
           <p className="text-2xl font-bold text-gray-900">{myPhilHours}h</p>
           <p className="text-xs text-gray-500 mt-0.5">Philanthropy</p>
         </Link>
 
         {/* Dues */}
-        <Link href="/dues" className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 hover:shadow-md transition-all">
+        <Link href="/dues" className="card p-4 hover:shadow-md transition-all">
           <CreditCard className={`w-5 h-5 mb-3 ${duesPaid ? 'text-green-500' : isOverdue ? 'text-red-500' : 'text-gray-400'}`} />
           <p className={`text-2xl font-bold ${duesPaid ? 'text-green-600' : isOverdue ? 'text-red-600' : 'text-gray-900'}`}>
             {duesPaid ? 'Paid' : isOverdue ? 'Overdue' : 'Due'}
@@ -195,7 +195,7 @@ export default async function HomePage() {
 
       {/* ── Announcements + Mini Calendar ── */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="md:col-span-2 bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+        <div className="md:col-span-2 card overflow-hidden">
         <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
           <h2 className="font-semibold text-gray-900">Announcements</h2>
           <Link href="/announcements" className="text-xs text-gray-500 hover:text-gray-700 font-medium flex items-center gap-1">
@@ -233,7 +233,7 @@ export default async function HomePage() {
       </div>
 
       {/* ── Full-width leaderboard ── */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+      <div className="card overflow-hidden">
         <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
           <h2 className="font-semibold text-gray-900">House Points Leaderboard</h2>
           <Link href="/house-points" className="text-xs text-gray-500 hover:text-gray-700 font-medium flex items-center gap-1">

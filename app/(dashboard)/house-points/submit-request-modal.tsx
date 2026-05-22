@@ -41,13 +41,13 @@ export function SubmitRequestModal({ profileId }: { profileId: string }) {
               </div>
               <div>
                 <label className="block text-xs font-semibold text-gray-600 mb-1">Points requested *</label>
-                <input name="points_requested" type="number" min="1" required placeholder="e.g. 10" className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400" />
+                <input name="points_requested" type="number" min="1" required placeholder="e.g. 10" className="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400" />
               </div>
               <div className="flex gap-3 pt-2">
                 <button type="submit" disabled={pending} className="flex-1 py-2.5 bg-yellow-500 hover:bg-yellow-600 disabled:opacity-50 text-zinc-900 font-semibold rounded-lg text-sm transition-colors">
                   {pending ? 'Submitting…' : 'Submit Request'}
                 </button>
-                <button type="button" onClick={() => setOpen(false)} className="flex-1 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-medium transition-colors">
+                <button type="button" onClick={() => setOpen(false)} className="flex-1 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full text-sm font-medium transition-colors">
                   Cancel
                 </button>
               </div>

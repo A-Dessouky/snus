@@ -41,7 +41,7 @@ export default async function ProfilePage() {
       <h1 className="text-2xl font-bold text-gray-900">My Profile</h1>
 
       {/* Profile card */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+      <div className="card p-6">
         <div className="flex items-start gap-5">
           <div className="w-16 h-16 rounded-full bg-yellow-500 flex items-center justify-center text-2xl font-bold text-zinc-900 shrink-0">
             {initials}
@@ -88,7 +88,7 @@ export default async function ProfilePage() {
           <h2 className="text-xs font-semibold uppercase tracking-wider text-gray-500 flex items-center gap-2">
             <CheckSquare className="w-3.5 h-3.5" /> My Tasks
           </h2>
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden divide-y divide-gray-100">
+          <div className="card overflow-hidden divide-y divide-gray-100">
             {tasks?.map(task => (
               <div key={task.id} className="flex items-center gap-4 px-4 py-3">
                 <div className={`w-2 h-2 rounded-full shrink-0 ${task.status === 'complete' ? 'bg-green-500' : task.status === 'in_progress' ? 'bg-blue-500' : 'bg-gray-300'}`} />
@@ -106,7 +106,7 @@ export default async function ProfilePage() {
           <h2 className="text-xs font-semibold uppercase tracking-wider text-gray-500 flex items-center gap-2">
             <Trophy className="w-3.5 h-3.5" /> House Points History
           </h2>
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden divide-y divide-gray-100">
+          <div className="card overflow-hidden divide-y divide-gray-100">
             {pointRequests?.map(req => (
               <div key={req.id} className="flex items-center gap-4 px-4 py-3">
                 <div className="flex-1 min-w-0">
@@ -136,7 +136,7 @@ export default async function ProfilePage() {
           <h2 className="text-xs font-semibold uppercase tracking-wider text-gray-500 flex items-center gap-2">
             <CreditCard className="w-3.5 h-3.5" /> Dues
           </h2>
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden divide-y divide-gray-100">
+          <div className="card overflow-hidden divide-y divide-gray-100">
             {dues?.map(due => (
               <div key={due.id} className="flex items-center gap-4 px-4 py-3">
                 <div className="flex-1">

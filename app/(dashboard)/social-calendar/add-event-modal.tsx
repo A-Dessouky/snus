@@ -40,7 +40,7 @@ export function AddEventModal({ profileId }: { profileId: string }) {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="block text-xs font-semibold text-gray-600 mb-1">Title *</label>
-                <input name="title" required placeholder="e.g. Mixer with Kappa" className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400" />
+                <input name="title" required placeholder="e.g. Mixer with Kappa" className="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400" />
               </div>
               <div>
                 <label className="block text-xs font-semibold text-gray-600 mb-1">Description</label>
@@ -48,23 +48,23 @@ export function AddEventModal({ profileId }: { profileId: string }) {
               </div>
               <div>
                 <label className="block text-xs font-semibold text-gray-600 mb-1">Location</label>
-                <input name="location" placeholder="e.g. Chapter House" className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400" />
+                <input name="location" placeholder="e.g. Chapter House" className="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400" />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-semibold text-gray-600 mb-1">Date *</label>
-                  <input name="date" type="date" required className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400" />
+                  <input name="date" type="date" required className="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400" />
                 </div>
                 <div>
                   <label className="block text-xs font-semibold text-gray-600 mb-1">Time *</label>
-                  <input name="time" type="time" required className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400" />
+                  <input name="time" type="time" required className="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400" />
                 </div>
               </div>
               <div className="flex gap-3 pt-2">
                 <button type="submit" disabled={pending} className="flex-1 py-2.5 bg-yellow-500 hover:bg-yellow-600 disabled:opacity-50 text-zinc-900 font-semibold rounded-lg text-sm transition-colors">
                   {pending ? 'Adding…' : 'Add Event'}
                 </button>
-                <button type="button" onClick={() => setOpen(false)} className="flex-1 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-medium transition-colors">
+                <button type="button" onClick={() => setOpen(false)} className="flex-1 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full text-sm font-medium transition-colors">
                   Cancel
                 </button>
               </div>

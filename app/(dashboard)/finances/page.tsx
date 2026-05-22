@@ -41,12 +41,12 @@ export default async function FinancesPage() {
         <h1 className="text-2xl font-bold text-gray-900">Finances</h1>
         <div className="flex gap-2">
           {isSocialChair && (
-            <button className="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg text-sm font-medium transition-colors">
+            <button className="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-full text-sm font-medium transition-colors">
               + Request Funds
             </button>
           )}
           {isExec && (
-            <button className="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg text-sm font-medium transition-colors">
+            <button className="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-full text-sm font-medium transition-colors">
               + Transaction
             </button>
           )}
@@ -56,17 +56,17 @@ export default async function FinancesPage() {
       {/* Balance — exec only */}
       {isExec && (
         <div className="grid grid-cols-3 md:grid-cols-3 gap-4">
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4">
+          <div className="card p-4">
             <p className="text-xs text-gray-500 uppercase tracking-wider">Balance</p>
             <p className={`text-2xl font-bold mt-1 ${balance >= 0 ? 'text-gray-900' : 'text-red-600'}`}>
               ${balance.toFixed(2)}
             </p>
           </div>
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4">
+          <div className="card p-4">
             <p className="text-xs text-gray-500 uppercase tracking-wider">Income</p>
             <p className="text-2xl font-bold text-green-600 mt-1">${income.toFixed(2)}</p>
           </div>
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4">
+          <div className="card p-4">
             <p className="text-xs text-gray-500 uppercase tracking-wider">Expenses</p>
             <p className="text-2xl font-bold text-red-600 mt-1">${expenses.toFixed(2)}</p>
           </div>
@@ -80,7 +80,7 @@ export default async function FinancesPage() {
             Pending Requests ({pendingRequests.length})
           </h2>
           {pendingRequests.map(req => (
-            <div key={req.id} className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 space-y-2">
+            <div key={req.id} className="card p-4 space-y-2">
               <div className="flex justify-between">
                 <p className="font-medium text-sm text-gray-900">{req.reason}</p>
                 <p className="font-semibold text-sm text-gray-900">${Number(req.amount).toFixed(2)}</p>
@@ -108,7 +108,7 @@ export default async function FinancesPage() {
         <section className="space-y-3">
           <h2 className="text-xs font-semibold uppercase tracking-wider text-gray-500">My Requests</h2>
           {myRequests.map(req => (
-            <div key={req.id} className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 flex items-center justify-between">
+            <div key={req.id} className="card p-4 flex items-center justify-between">
               <div>
                 <p className="font-medium text-sm text-gray-900">{req.reason}</p>
                 <p className="text-xs text-gray-400 mt-0.5">${Number(req.amount).toFixed(2)}</p>
@@ -132,7 +132,7 @@ export default async function FinancesPage() {
       {isExec && (transactions ?? []).length > 0 && (
         <section className="space-y-3">
           <h2 className="text-xs font-semibold uppercase tracking-wider text-gray-500">Transactions</h2>
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+          <div className="card overflow-hidden">
             <table className="w-full text-sm">
               <thead className="bg-gray-50 border-b border-gray-100">
                 <tr>

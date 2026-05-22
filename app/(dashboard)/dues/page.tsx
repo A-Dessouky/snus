@@ -36,7 +36,7 @@ export default async function DuesPage() {
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-gray-900">Dues</h1>
         {isExec && (
-          <button className="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg text-sm font-medium transition-colors">
+          <button className="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-full text-sm font-medium transition-colors">
             + Add Due
           </button>
         )}
@@ -45,11 +45,11 @@ export default async function DuesPage() {
       {/* Summary cards for exec */}
       {isExec && (
         <div className="grid grid-cols-2 gap-4">
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4">
+          <div className="card p-4">
             <p className="text-xs text-gray-500 uppercase tracking-wider">Outstanding</p>
             <p className="text-2xl font-bold text-red-600 mt-1">{unpaid.length}</p>
           </div>
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4">
+          <div className="card p-4">
             <p className="text-xs text-gray-500 uppercase tracking-wider">Paid</p>
             <p className="text-2xl font-bold text-green-600 mt-1">{paid.length}</p>
           </div>
@@ -90,7 +90,7 @@ export default async function DuesPage() {
         <section className="space-y-3">
           <h2 className="text-xs font-semibold uppercase tracking-wider text-gray-500">Paid</h2>
           {paid.map(due => (
-            <div key={due.id} className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 flex items-center gap-4 opacity-70">
+            <div key={due.id} className="card p-4 flex items-center gap-4 opacity-70">
               <CheckCircle className="w-5 h-5 text-green-500 shrink-0" />
               <div className="flex-1 min-w-0">
                 {isExec && due.member && (

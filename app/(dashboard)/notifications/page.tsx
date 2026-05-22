@@ -66,7 +66,7 @@ export default async function NotificationsPage() {
         <section className="space-y-2">
           <h2 className="text-xs font-semibold uppercase tracking-wider text-gray-500">Earlier</h2>
           {read.map(n => (
-            <div key={n.id} className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 flex gap-4 opacity-60">
+            <div key={n.id} className="card p-4 flex gap-4 opacity-60">
               <Bell className="w-4 h-4 text-gray-400 mt-0.5 shrink-0" />
               <div className="flex-1 min-w-0">
                 <p className="font-medium text-sm text-gray-900">{n.title}</p>

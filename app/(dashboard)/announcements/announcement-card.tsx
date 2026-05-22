@@ -67,7 +67,7 @@ export function AnnouncementCard({ announcement: a, currentProfileId, currentRol
   }
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 shadow-sm">
+    <div className="card">
       <div className="p-5">
         {editing ? (
           <form onSubmit={handleUpdate} className="space-y-3">
@@ -95,7 +95,7 @@ export function AnnouncementCard({ announcement: a, currentProfileId, currentRol
               name="title"
               defaultValue={a.title}
               required
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
+              className="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
             />
             <textarea
               name="content"
@@ -105,7 +105,7 @@ export function AnnouncementCard({ announcement: a, currentProfileId, currentRol
               className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-yellow-400"
             />
             <div className="flex gap-2">
-              <button type="submit" disabled={pending} className="flex items-center gap-1.5 px-3 py-1.5 bg-yellow-500 hover:bg-yellow-600 text-zinc-900 rounded-lg text-xs font-semibold">
+              <button type="submit" disabled={pending} className="flex items-center gap-1.5 px-3 py-1.5 bg-yellow-500 hover:bg-yellow-600 text-zinc-900 rounded-full text-xs font-semibold">
                 <Check className="w-3.5 h-3.5" /> Save
               </button>
               <button type="button" onClick={() => setEditing(false)} className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-xs font-medium">
@@ -175,7 +175,7 @@ export function AnnouncementCard({ announcement: a, currentProfileId, currentRol
               name="content"
               placeholder="Write a comment…"
               required
-              className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
+              className="flex-1 border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
             />
             <button
               type="submit"

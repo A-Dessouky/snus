@@ -54,7 +54,7 @@ export function NewAnnouncementForm({ profileId, role }: { profileId: string; ro
   }
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 space-y-4">
+    <form onSubmit={handleSubmit} className="card p-5 space-y-4">
       <h2 className="font-semibold text-gray-900">New Announcement</h2>
 
       {/* Type selector */}
@@ -82,7 +82,7 @@ export function NewAnnouncementForm({ profileId, role }: { profileId: string; ro
         name="title"
         required
         placeholder="Title"
-        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
+        className="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
       />
       <textarea
         name="content"
@@ -102,7 +102,7 @@ export function NewAnnouncementForm({ profileId, role }: { profileId: string; ro
         <button
           type="button"
           onClick={() => setOpen(false)}
-          className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-medium transition-colors"
+          className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full text-sm font-medium transition-colors"
         >
           Cancel
         </button>

@@ -4,6 +4,23 @@
 
 @layer base {
   body {
-    @apply bg-gray-50 text-gray-900 antialiased;
+    @apply antialiased text-gray-900;
+    background-color: #ECEEF2;
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #D1D5DB transparent;
+  }
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #D1D5DB; border-radius: 9999px; }
+}
+
+@layer components {
+  /* Drop this on any white card to get the no-border premium shadow look */
+  .card {
+    @apply bg-white rounded-2xl;
+    box-shadow: 0 2px 16px -4px rgba(0,0,0,0.09), 0 0 0 1px rgba(0,0,0,0.03);
   }
 }

@@ -47,7 +47,7 @@ export default async function MemberManagementPage() {
           <h2 className="text-xs font-semibold uppercase tracking-wider text-gray-500">
             Pending First Login ({pending.length})
           </h2>
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+          <div className="card overflow-hidden">
             <table className="w-full text-sm">
               <thead className="bg-gray-50 border-b border-gray-100">
                 <tr>
@@ -79,7 +79,7 @@ export default async function MemberManagementPage() {
         <h2 className="text-xs font-semibold uppercase tracking-wider text-gray-500">
           Active Members ({active.length})
         </h2>
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+        <div className="card overflow-hidden">
           <table className="w-full text-sm">
             <thead className="bg-gray-50 border-b border-gray-100">
               <tr>

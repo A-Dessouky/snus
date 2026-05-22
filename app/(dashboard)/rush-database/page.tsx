@@ -32,7 +32,7 @@ export default async function RushDatabasePage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-gray-900">Rush Database</h1>
-        <button className="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg text-sm font-medium transition-colors">
+        <button className="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-full text-sm font-medium transition-colors">
           + Add Prospect
         </button>
       </div>
@@ -47,7 +47,7 @@ export default async function RushDatabasePage() {
               <span className="text-xs text-gray-400">{items.length}</span>
             </div>
             {items.map(p => (
-              <div key={p.id} className="bg-white rounded-xl border border-gray-200 shadow-sm p-3 space-y-1 cursor-pointer hover:border-yellow-300 transition-colors">
+              <div key={p.id} className="card p-3 space-y-1 cursor-pointer hover:border-yellow-300 transition-colors">
                 {p.photo_url && (
                   <img src={p.photo_url} alt="" className="w-8 h-8 rounded-full object-cover mb-2" />
                 )}

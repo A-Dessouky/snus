@@ -55,7 +55,7 @@ export function AddMemberModal() {
                   name="full_name"
                   type="text"
                   placeholder="e.g. John Smith"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                  className="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
                 />
               </div>
               <div>
@@ -65,7 +65,7 @@ export function AddMemberModal() {
                   type="email"
                   required
                   placeholder="sunetid@stanford.edu"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                  className="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
                 />
               </div>
               <div>
@@ -73,7 +73,7 @@ export function AddMemberModal() {
                 <select
                   name="role"
                   required
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                  className="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
                 >
                   <option value="">Select a role…</option>
                   {ROLES.map(r => (
@@ -95,7 +95,7 @@ export function AddMemberModal() {
                 <button
                   type="button"
                   onClick={() => setOpen(false)}
-                  className="flex-1 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-medium transition-colors"
+                  className="flex-1 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full text-sm font-medium transition-colors"
                 >
                   Cancel
                 </button>

@@ -51,7 +51,7 @@ export default async function PhilanthropyPage() {
       )}
 
       {/* Leaderboard */}
-      <section className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+      <section className="card overflow-hidden">
         <div className="px-5 py-4 border-b border-gray-100 flex items-center gap-2">
           <Heart className="w-4 h-4 text-red-400" />
           <h2 className="font-semibold text-gray-900">Hours Leaderboard</h2>
@@ -74,7 +74,7 @@ export default async function PhilanthropyPage() {
       {myRequests.length > 0 && (
         <section className="space-y-2">
           <h2 className="text-xs font-semibold uppercase tracking-wider text-gray-500">My Submissions</h2>
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden divide-y divide-gray-100">
+          <div className="card overflow-hidden divide-y divide-gray-100">
             {myRequests.map(req => (
               <div key={req.id} className="flex items-center gap-4 px-4 py-3">
                 <div className="flex-1 min-w-0">
