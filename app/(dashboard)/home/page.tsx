@@ -125,30 +125,6 @@ export default async function HomePage() {
           </div>
         </div>
 
-        {/* Embedded stat tiles */}
-        <div className="px-7 pb-6">
-          <div className="grid grid-cols-3 gap-3 mt-4">
-            <Link href="/house-points" className="rounded-2xl p-4 transition-all hover:bg-white/10" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
-              <p className="text-zinc-500 text-xs uppercase tracking-wider font-medium">Rank</p>
-              <p className="text-3xl font-bold text-white mt-1">{myRank > 0 ? `#${myRank}` : '—'}</p>
-              <p className="text-zinc-600 text-xs mt-0.5">of {totalMembers} members</p>
-            </Link>
-            <Link href="/philanthropy" className="rounded-2xl p-4 transition-colors" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
-              <p className="text-zinc-500 text-xs uppercase tracking-wider font-medium">Philanthropy</p>
-              <p className="text-3xl font-bold text-white mt-1">{myPhilHours}<span className="text-lg text-zinc-400">h</span></p>
-              <p className="text-zinc-600 text-xs mt-0.5">hours logged</p>
-            </Link>
-            <Link href="/dues" className="rounded-2xl p-4 transition-colors" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
-              <p className="text-zinc-500 text-xs uppercase tracking-wider font-medium">Dues</p>
-              <p className={`text-3xl font-bold mt-1 ${duesPaid ? 'text-green-400' : isOverdue ? 'text-red-400' : 'text-yellow-400'}`}>
-                {duesPaid ? 'Paid' : isOverdue ? 'Late' : 'Due'}
-              </p>
-              <p className="text-zinc-600 text-xs mt-0.5">
-                {duesPaid ? 'All clear' : `By ${fmtDueDate(earliestDue!.due_date)}`}
-              </p>
-            </Link>
-          </div>
-        </div>
 
         {/* Upcoming events */}
         {upcomingEvents && upcomingEvents.length > 0 && (
@@ -181,6 +157,27 @@ export default async function HomePage() {
             ))}
           </div>
         )}
+      </div>
+
+      {/* ── Stat cards ── */}
+      <div className="grid grid-cols-3 gap-4">
+        <Link href="/house-points" className="glass-card p-5 hover:shadow-xl transition-all">
+          <p className="text-xs text-gray-400 uppercase tracking-wider font-medium mb-2">Rank</p>
+          <p className="text-3xl font-bold text-gray-900">{myRank > 0 ? `#${myRank}` : '—'}</p>
+          <p className="text-xs text-gray-400 mt-1">of {totalMembers} members</p>
+        </Link>
+        <Link href="/philanthropy" className="glass-card p-5 hover:shadow-xl transition-all">
+          <p className="text-xs text-gray-400 uppercase tracking-wider font-medium mb-2">Philanthropy</p>
+          <p className="text-3xl font-bold text-gray-900">{myPhilHours}<span className="text-lg text-gray-400">h</span></p>
+          <p className="text-xs text-gray-400 mt-1">hours logged</p>
+        </Link>
+        <Link href="/dues" className="glass-card p-5 hover:shadow-xl transition-all">
+          <p className="text-xs text-gray-400 uppercase tracking-wider font-medium mb-2">Dues</p>
+          <p className={`text-3xl font-bold mt-0 ${duesPaid ? 'text-green-600' : isOverdue ? 'text-red-600' : 'text-gray-900'}`}>
+            {duesPaid ? 'Paid' : isOverdue ? 'Late' : 'Due'}
+          </p>
+          <p className="text-xs text-gray-400 mt-1">{duesPaid ? 'All clear' : `By ${fmtDueDate(earliestDue!.due_date)}`}</p>
+        </Link>
       </div>
 
       {/* ── Announcements + Calendar ── */}
@@ -229,7 +226,7 @@ export default async function HomePage() {
             Details <ArrowRight className="w-3 h-3" />
           </Link>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2">
+        <div>
           {fullLeaderboard.slice(0, 10).map((m, i) => {
             const isMe = m.id === profile.id
             const medals = ['🥇', '🥈', '🥉']
