@@ -39,6 +39,18 @@ export async function approvePointRequest(formData: FormData) {
   revalidatePath('/house-points')
 }
 
+export async function editPointRequest(formData: FormData) {
+  const id = formData.get('id') as string
+  const points_awarded = parseInt(formData.get('points_awarded') as string) || 0
+  await adminClient().from('house_point_requests').update({ points_awarded }).eq('id', id)
+  revalidatePath('/house-points')
+}
+
+export async function deletePointRequest(id: string) {
+  await adminClient().from('house_point_requests').delete().eq('id', id)
+  revalidatePath('/house-points')
+}
+
 export async function awardPoints(formData: FormData) {
   const member_id = formData.get('member_id') as string
   const points = parseInt(formData.get('points') as string) || 0

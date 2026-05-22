@@ -4,6 +4,7 @@ import { Trophy } from 'lucide-react'
 import { SubmitRequestModal } from './submit-request-modal'
 import { ExecReviewCard } from './exec-review-card'
 import { AwardPointsModal } from './award-points-modal'
+import { EditPointCard } from './edit-point-card'
 
 export default async function HousePointsPage() {
   const supabase = await createClient()
@@ -82,6 +83,23 @@ export default async function HousePointsPage() {
           ))}
         </ul>
       </section>
+
+      {/* President: edit all approved entries */}
+      {profile.is_president && (
+        <section className="space-y-2">
+          <h2 className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+            Edit Point Entries
+          </h2>
+          <div className="card overflow-hidden divide-y divide-gray-100">
+            {(requests ?? []).filter(r => r.status === 'approved').map(req => (
+              <EditPointCard key={req.id} request={req as any} />
+            ))}
+            {!(requests ?? []).filter(r => r.status === 'approved').length && (
+              <p className="px-4 py-6 text-sm text-gray-400 text-center">No approved entries yet.</p>
+            )}
+          </div>
+        </section>
+      )}
 
       {/* My request history */}
       {!isExec && myRequests.length > 0 && (
