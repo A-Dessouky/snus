@@ -4,18 +4,16 @@ import { createClient } from '@supabase/supabase-js'
 import { revalidatePath } from 'next/cache'
 
 function adminClient() {
-  return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  )
+  return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!)
 }
 
 export async function createAnnouncement(formData: FormData) {
   const title = formData.get('title') as string
   const content = formData.get('content') as string
   const profileId = formData.get('profileId') as string
+  const type = formData.get('type') as string
   if (!title.trim() || !content.trim()) return
-  await adminClient().from('announcements').insert({ title, content, created_by: profileId })
+  await adminClient().from('announcements').insert({ title, content, created_by: profileId, type })
   revalidatePath('/announcements')
 }
 
@@ -23,8 +21,9 @@ export async function updateAnnouncement(formData: FormData) {
   const id = formData.get('id') as string
   const title = formData.get('title') as string
   const content = formData.get('content') as string
+  const type = formData.get('type') as string
   if (!title.trim() || !content.trim()) return
-  await adminClient().from('announcements').update({ title, content }).eq('id', id)
+  await adminClient().from('announcements').update({ title, content, type }).eq('id', id)
   revalidatePath('/announcements')
 }
 

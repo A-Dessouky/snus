@@ -14,16 +14,29 @@ function timeAgo(iso: string) {
   return `${Math.floor(h / 24)}d ago`
 }
 
+const TYPE_OPTIONS: Record<string, { label: string; color: string }> = {
+  chapter: { label: 'Chapter', color: 'bg-gray-100 text-gray-700' },
+  social:  { label: 'Social',  color: 'bg-blue-100 text-blue-700' },
+  rush:    { label: 'Rush',    color: 'bg-purple-100 text-purple-700' },
+  exec:    { label: 'Exec',    color: 'bg-yellow-100 text-yellow-700' },
+  alumni:  { label: 'Alumni',  color: 'bg-green-100 text-green-700' },
+  ra:      { label: 'RA',      color: 'bg-orange-100 text-orange-700' },
+}
+
+const EXEC_TYPES = ['chapter', 'social', 'rush', 'exec', 'alumni', 'ra']
+
 interface Props {
   announcement: any
   currentProfileId: string
   currentRole: string
+  typeMeta: { label: string; color: string }
 }
 
-export function AnnouncementCard({ announcement: a, currentProfileId, currentRole }: Props) {
+export function AnnouncementCard({ announcement: a, currentProfileId, currentRole, typeMeta }: Props) {
   const [editing, setEditing] = useState(false)
   const [showComments, setShowComments] = useState(false)
   const [pending, setPending] = useState(false)
+  const [editType, setEditType] = useState(a.type ?? 'chapter')
 
   const canEdit = a.author?.id === currentProfileId || currentRole === 'exec'
   const sortedComments = [...(a.comments ?? [])].sort(
@@ -33,7 +46,9 @@ export function AnnouncementCard({ announcement: a, currentProfileId, currentRol
   async function handleUpdate(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setPending(true)
-    await updateAnnouncement(new FormData(e.currentTarget))
+    const fd = new FormData(e.currentTarget)
+    fd.append('type', editType)
+    await updateAnnouncement(fd)
     setPending(false)
     setEditing(false)
   }
@@ -57,6 +72,25 @@ export function AnnouncementCard({ announcement: a, currentProfileId, currentRol
         {editing ? (
           <form onSubmit={handleUpdate} className="space-y-3">
             <input type="hidden" name="id" value={a.id} />
+            {/* Type selector for exec */}
+            {currentRole === 'exec' && (
+              <div className="flex flex-wrap gap-2">
+                {EXEC_TYPES.map(t => (
+                  <button
+                    key={t}
+                    type="button"
+                    onClick={() => setEditType(t)}
+                    className={`text-xs font-semibold px-3 py-1.5 rounded-full border-2 transition-colors ${
+                      editType === t
+                        ? `${TYPE_OPTIONS[t].color} border-current`
+                        : 'bg-gray-50 text-gray-400 border-transparent'
+                    }`}
+                  >
+                    {TYPE_OPTIONS[t].label}
+                  </button>
+                ))}
+              </div>
+            )}
             <input
               name="title"
               defaultValue={a.title}
@@ -82,19 +116,22 @@ export function AnnouncementCard({ announcement: a, currentProfileId, currentRol
         ) : (
           <>
             <div className="flex items-start justify-between gap-4">
-              <h2 className="font-semibold text-gray-900">{a.title}</h2>
-              <div className="flex items-center gap-1 shrink-0">
-                {canEdit && (
-                  <>
-                    <button onClick={() => setEditing(true)} className="p-1.5 text-gray-400 hover:text-yellow-600 hover:bg-yellow-50 rounded-lg transition-colors">
-                      <Pencil className="w-3.5 h-3.5" />
-                    </button>
-                    <button onClick={handleDelete} className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors">
-                      <Trash2 className="w-3.5 h-3.5" />
-                    </button>
-                  </>
-                )}
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${typeMeta.color}`}>
+                  {typeMeta.label}
+                </span>
+                <h2 className="font-semibold text-gray-900">{a.title}</h2>
               </div>
+              {canEdit && (
+                <div className="flex items-center gap-1 shrink-0">
+                  <button onClick={() => setEditing(true)} className="p-1.5 text-gray-400 hover:text-yellow-600 hover:bg-yellow-50 rounded-lg transition-colors">
+                    <Pencil className="w-3.5 h-3.5" />
+                  </button>
+                  <button onClick={handleDelete} className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors">
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              )}
             </div>
             <p className="mt-2 text-sm text-gray-700 whitespace-pre-wrap">{a.content}</p>
             <div className="mt-3 flex items-center justify-between">
@@ -113,7 +150,6 @@ export function AnnouncementCard({ announcement: a, currentProfileId, currentRol
         )}
       </div>
 
-      {/* Comments */}
       {showComments && (
         <div className="border-t border-gray-100 px-5 py-4 space-y-4">
           {sortedComments.length > 0 && (
