@@ -11,7 +11,7 @@ export default async function HousePointsPage() {
   if (!user) redirect('/login')
 
   const [{ data: profile }, { data: members }, { data: requests }] = await Promise.all([
-    supabase.from('profiles').select('id, role').eq('user_id', user.id).single(),
+    supabase.from('profiles').select('id, role, is_president').eq('user_id', user.id).single(),
     supabase.from('profiles').select('id, full_name, email').order('full_name'),
     supabase
       .from('house_point_requests')
@@ -42,7 +42,7 @@ export default async function HousePointsPage() {
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-gray-900">House Points</h1>
         <div className="flex gap-2">
-          {isExec && <AwardPointsModal execProfileId={profile.id} members={members ?? []} />}
+          {profile.is_president && <AwardPointsModal execProfileId={profile.id} members={members ?? []} />}
           <SubmitRequestModal profileId={profile.id} />
         </div>
       </div>
