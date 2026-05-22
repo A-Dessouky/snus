@@ -128,10 +128,7 @@ export default async function HomePage() {
         {/* Embedded stat tiles */}
         <div className="px-7 pb-6">
           <div className="grid grid-cols-3 gap-3 mt-4">
-            <Link href="/house-points" className="rounded-2xl p-4 transition-colors" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}
-              onMouseOver={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.08)') as any}
-              onMouseOut={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.05)') as any}
-            >
+            <Link href="/house-points" className="rounded-2xl p-4 transition-all hover:bg-white/10" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
               <p className="text-zinc-500 text-xs uppercase tracking-wider font-medium">Rank</p>
               <p className="text-3xl font-bold text-white mt-1">{myRank > 0 ? `#${myRank}` : '—'}</p>
               <p className="text-zinc-600 text-xs mt-0.5">of {totalMembers} members</p>
