@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { Trophy, CreditCard, Heart, ArrowRight, Clock, MapPin, CheckSquare } from 'lucide-react'
+import { ArrowRight, Clock, MapPin, CheckSquare } from 'lucide-react'
 import { MiniCalendar } from '@/components/mini-calendar'
 import type { Role } from '@/lib/types'
 
@@ -78,19 +78,18 @@ export default async function HomePage() {
     supabase.from('profiles').select('id, full_name, email'),
     supabase.from('dues').select('*').eq('member_id', profile.id).order('due_date'),
     supabase.from('philanthropy_hours').select('hours_awarded').eq('member_id', profile.id).eq('status', 'approved'),
-    supabase.from('events').select('id, title, start_time').gte('start_time', new Date(today.getFullYear(), today.getMonth(), 1).toISOString()).lt('start_time', new Date(today.getFullYear(), today.getMonth() + 1, 1).toISOString()),
+    supabase.from('events').select('id, title, start_time')
+      .gte('start_time', new Date(today.getFullYear(), today.getMonth(), 1).toISOString())
+      .lt('start_time', new Date(today.getFullYear(), today.getMonth() + 1, 1).toISOString()),
   ])
 
   const openTasks = myTasks?.length ?? 0
   const myPhilHours = philHours?.reduce((s, r) => s + (r.hours_awarded ?? 0), 0) ?? 0
-
-  // Dues status
   const unpaidDues = allDues?.filter(d => !d.paid) ?? []
   const duesPaid = unpaidDues.length === 0
   const earliestDue = unpaidDues[0]
   const isOverdue = earliestDue ? new Date(earliestDue.due_date) < today : false
 
-  // Leaderboard + rank
   const pointMap: Record<string, number> = {}
   allPointRequests?.forEach(r => {
     pointMap[r.member_id] = (pointMap[r.member_id] ?? 0) + (r.points_awarded ?? 0)
@@ -103,152 +102,146 @@ export default async function HomePage() {
   const totalMembers = fullLeaderboard.length
 
   return (
-    <div className="w-full space-y-6">
+    <div className="w-full space-y-5">
 
-      {/* ── Hero ── */}
-      <div className="relative bg-zinc-900 rounded-2xl overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-zinc-800 via-zinc-900 to-black" />
-        <div className="relative px-6 md:px-8 py-7 md:py-8">
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <p className="text-zinc-500 text-xs md:text-sm">{dateStr}</p>
-              <h1 className="text-2xl md:text-3xl font-bold text-white mt-1">{greeting()}, {displayName}.</h1>
-              <div className="flex flex-wrap items-center gap-2 mt-3">
-                <span className="bg-yellow-500/20 text-yellow-400 text-xs font-semibold px-3 py-1 rounded-full">
-                  {ROLE_LABELS[profile.role as Role]}
-                </span>
-                {openTasks > 0 && (
-                  <Link href="/task-board" className="flex items-center gap-1.5 bg-white/8 hover:bg-white/12 text-zinc-300 text-xs px-3 py-1 rounded-full transition-colors">
-                    <CheckSquare className="w-3 h-3" /> {openTasks} task{openTasks !== 1 ? 's' : ''} open
-                  </Link>
-                )}
-              </div>
-            </div>
+      {/* ── Hero — dark card with embedded stats ── */}
+      <div className="rounded-3xl overflow-hidden" style={{
+        background: 'linear-gradient(135deg, #1a1a1f 0%, #111114 60%, #0d0d10 100%)',
+        boxShadow: '0 24px 64px -12px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05)',
+      }}>
+        <div className="px-7 pt-7 pb-5">
+          {/* Greeting */}
+          <p className="text-zinc-500 text-xs">{dateStr}</p>
+          <h1 className="text-3xl font-bold text-white mt-1 tracking-tight">{greeting()}, {displayName}.</h1>
+          <div className="flex flex-wrap items-center gap-2 mt-3">
+            <span className="bg-yellow-500/15 text-yellow-400 text-xs font-semibold px-3 py-1 rounded-full border border-yellow-500/20">
+              {ROLE_LABELS[profile.role as Role]}
+            </span>
+            {openTasks > 0 && (
+              <Link href="/task-board" className="flex items-center gap-1.5 bg-white/6 hover:bg-white/10 text-zinc-400 text-xs px-3 py-1 rounded-full border border-white/8 transition-colors">
+                <CheckSquare className="w-3 h-3" /> {openTasks} task{openTasks !== 1 ? 's' : ''} open
+              </Link>
+            )}
           </div>
-
-          {/* Upcoming events mini-list */}
-          {upcomingEvents && upcomingEvents.length > 0 && (
-            <div className="mt-5 space-y-2">
-              <p className="text-zinc-500 text-xs uppercase tracking-wider font-semibold">Upcoming</p>
-              {upcomingEvents.map((e, i) => (
-                <Link
-                  key={e.id}
-                  href="/social-calendar"
-                  className={`flex items-center gap-4 rounded-xl px-4 py-3 transition-colors ${
-                    i === 0 ? 'bg-white/8 hover:bg-white/12 border border-white/10' : 'hover:bg-white/5'
-                  }`}
-                >
-                  <div className="shrink-0 text-center w-10">
-                    <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${
-                      i === 0 ? 'bg-yellow-500 text-zinc-900' : 'bg-white/10 text-zinc-400'
-                    }`}>
-                      {daysUntil(e.start_time)}
-                    </span>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className={`font-semibold truncate ${i === 0 ? 'text-white' : 'text-zinc-400'}`}>{e.title}</p>
-                    <div className="flex items-center gap-3 mt-0.5 text-zinc-500 text-xs">
-                      <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{fmtEventDate(e.start_time)} at {fmtEventTime(e.start_time)}</span>
-                      {e.location && <span className="flex items-center gap-1 hidden sm:flex"><MapPin className="w-3 h-3" />{e.location}</span>}
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          )}
         </div>
-      </div>
 
-      {/* ── Stat cards ── */}
-      <div className="grid grid-cols-3 gap-4">
-        {/* Rank */}
-        <Link href="/house-points" className="card p-4 hover:shadow-md transition-all">
-          <Trophy className="w-5 h-5 text-gray-400 mb-3" />
-          <p className="text-2xl font-bold text-gray-900">
-            {myRank > 0 ? `#${myRank}` : '—'}
-          </p>
-          <p className="text-xs text-gray-500 mt-0.5">
-            {myRank > 0 ? `of ${totalMembers} members` : 'No points yet'}
-          </p>
-        </Link>
-
-        {/* Philanthropy */}
-        <Link href="/philanthropy" className="card p-4 hover:shadow-md transition-all">
-          <Heart className="w-5 h-5 text-gray-400 mb-3" />
-          <p className="text-2xl font-bold text-gray-900">{myPhilHours}h</p>
-          <p className="text-xs text-gray-500 mt-0.5">Philanthropy</p>
-        </Link>
-
-        {/* Dues */}
-        <Link href="/dues" className="card p-4 hover:shadow-md transition-all">
-          <CreditCard className={`w-5 h-5 mb-3 ${duesPaid ? 'text-green-500' : isOverdue ? 'text-red-500' : 'text-gray-400'}`} />
-          <p className={`text-2xl font-bold ${duesPaid ? 'text-green-600' : isOverdue ? 'text-red-600' : 'text-gray-900'}`}>
-            {duesPaid ? 'Paid' : isOverdue ? 'Overdue' : 'Due'}
-          </p>
-          <p className="text-xs text-gray-500 mt-0.5">
-            {duesPaid
-              ? allDues?.find(d => d.paid)?.semester ?? 'All clear'
-              : `By ${fmtDueDate(earliestDue!.due_date)}`}
-          </p>
-        </Link>
-      </div>
-
-      {/* ── Announcements + Mini Calendar ── */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="md:col-span-2 card overflow-hidden">
-        <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
-          <h2 className="font-semibold text-gray-900">Announcements</h2>
-          <Link href="/announcements" className="text-xs text-gray-500 hover:text-gray-700 font-medium flex items-center gap-1">
-            View all <ArrowRight className="w-3 h-3" />
-          </Link>
+        {/* Embedded stat tiles */}
+        <div className="px-7 pb-6">
+          <div className="grid grid-cols-3 gap-3 mt-4">
+            <Link href="/house-points" className="rounded-2xl p-4 transition-colors" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}
+              onMouseOver={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.08)') as any}
+              onMouseOut={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.05)') as any}
+            >
+              <p className="text-zinc-500 text-xs uppercase tracking-wider font-medium">Rank</p>
+              <p className="text-3xl font-bold text-white mt-1">{myRank > 0 ? `#${myRank}` : '—'}</p>
+              <p className="text-zinc-600 text-xs mt-0.5">of {totalMembers} members</p>
+            </Link>
+            <Link href="/philanthropy" className="rounded-2xl p-4 transition-colors" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
+              <p className="text-zinc-500 text-xs uppercase tracking-wider font-medium">Philanthropy</p>
+              <p className="text-3xl font-bold text-white mt-1">{myPhilHours}<span className="text-lg text-zinc-400">h</span></p>
+              <p className="text-zinc-600 text-xs mt-0.5">hours logged</p>
+            </Link>
+            <Link href="/dues" className="rounded-2xl p-4 transition-colors" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
+              <p className="text-zinc-500 text-xs uppercase tracking-wider font-medium">Dues</p>
+              <p className={`text-3xl font-bold mt-1 ${duesPaid ? 'text-green-400' : isOverdue ? 'text-red-400' : 'text-yellow-400'}`}>
+                {duesPaid ? 'Paid' : isOverdue ? 'Late' : 'Due'}
+              </p>
+              <p className="text-zinc-600 text-xs mt-0.5">
+                {duesPaid ? 'All clear' : `By ${fmtDueDate(earliestDue!.due_date)}`}
+              </p>
+            </Link>
+          </div>
         </div>
-        {announcements && announcements.length > 0 ? (
-          <ul className="divide-y divide-gray-50">
-            {announcements.map(a => (
-              <li key={a.id} className="px-5 py-4">
-                <div className="flex items-start gap-3">
-                  <span className={`mt-0.5 shrink-0 text-xs font-semibold px-2 py-0.5 rounded-full ${TYPE_COLORS[a.type ?? 'chapter']}`}>
-                    {(a.type ?? 'chapter').charAt(0).toUpperCase() + (a.type ?? 'chapter').slice(1)}
-                  </span>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-medium text-sm text-gray-900">{a.title}</p>
-                    <p className="text-sm text-gray-500 mt-0.5 line-clamp-2">{a.content}</p>
-                    <p className="text-xs text-gray-400 mt-1.5">
-                      {(a.author as any)?.full_name ?? (a.author as any)?.email} · {new Date(a.created_at).toLocaleDateString()}
-                    </p>
+
+        {/* Upcoming events */}
+        {upcomingEvents && upcomingEvents.length > 0 && (
+          <div className="px-7 pb-7 space-y-2">
+            <div style={{ height: '1px', background: 'rgba(255,255,255,0.06)' }} className="mb-4" />
+            <p className="text-zinc-600 text-xs uppercase tracking-widest font-semibold mb-3">Upcoming</p>
+            {upcomingEvents.map((e, i) => (
+              <Link
+                key={e.id}
+                href="/social-calendar"
+                className="flex items-center gap-4 rounded-2xl px-4 py-3 transition-colors"
+                style={{
+                  background: i === 0 ? 'rgba(255,255,255,0.07)' : 'transparent',
+                  border: i === 0 ? '1px solid rgba(255,255,255,0.1)' : '1px solid transparent',
+                }}
+              >
+                <span className={`text-xs font-bold px-2.5 py-1 rounded-full shrink-0 ${
+                  i === 0 ? 'bg-yellow-500 text-zinc-900' : 'bg-white/10 text-zinc-500'
+                }`}>
+                  {daysUntil(e.start_time)}
+                </span>
+                <div className="flex-1 min-w-0">
+                  <p className={`font-semibold truncate text-sm ${i === 0 ? 'text-white' : 'text-zinc-500'}`}>{e.title}</p>
+                  <div className="flex items-center gap-3 mt-0.5 text-zinc-600 text-xs">
+                    <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{fmtEventDate(e.start_time)} · {fmtEventTime(e.start_time)}</span>
+                    {e.location && <span className="hidden sm:flex items-center gap-1"><MapPin className="w-3 h-3" />{e.location}</span>}
                   </div>
                 </div>
-              </li>
+              </Link>
             ))}
-          </ul>
-        ) : (
-          <div className="px-5 py-10 text-center text-sm text-gray-400">No announcements yet.</div>
+          </div>
         )}
+      </div>
+
+      {/* ── Announcements + Calendar ── */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div className="md:col-span-2 glass-card overflow-hidden">
+          <div className="px-6 py-4 flex items-center justify-between" style={{ borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
+            <h2 className="font-semibold text-gray-900">Announcements</h2>
+            <Link href="/announcements" className="text-xs text-gray-400 hover:text-gray-600 font-medium flex items-center gap-1 transition-colors">
+              View all <ArrowRight className="w-3 h-3" />
+            </Link>
+          </div>
+          {announcements && announcements.length > 0 ? (
+            <ul>
+              {announcements.map((a, i) => (
+                <li key={a.id} className="px-6 py-4" style={{ borderBottom: i < announcements.length - 1 ? '1px solid rgba(0,0,0,0.04)' : 'none' }}>
+                  <div className="flex items-start gap-3">
+                    <span className={`mt-0.5 shrink-0 text-xs font-semibold px-2 py-0.5 rounded-full ${TYPE_COLORS[a.type ?? 'chapter']}`}>
+                      {(a.type ?? 'chapter').charAt(0).toUpperCase() + (a.type ?? 'chapter').slice(1)}
+                    </span>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-sm text-gray-900">{a.title}</p>
+                      <p className="text-sm text-gray-500 mt-0.5 line-clamp-2">{a.content}</p>
+                      <p className="text-xs text-gray-400 mt-1.5">
+                        {(a.author as any)?.full_name ?? (a.author as any)?.email} · {new Date(a.created_at).toLocaleDateString()}
+                      </p>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div className="px-6 py-12 text-center text-sm text-gray-400">No announcements yet.</div>
+          )}
         </div>
 
-        {/* Mini calendar */}
         <div className="md:col-span-1">
           <MiniCalendar events={monthEvents ?? []} />
         </div>
       </div>
 
-      {/* ── Full-width leaderboard ── */}
-      <div className="card overflow-hidden">
-        <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+      {/* ── Leaderboard ── */}
+      <div className="glass-card overflow-hidden">
+        <div className="px-6 py-4 flex items-center justify-between" style={{ borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
           <h2 className="font-semibold text-gray-900">House Points Leaderboard</h2>
-          <Link href="/house-points" className="text-xs text-gray-500 hover:text-gray-700 font-medium flex items-center gap-1">
+          <Link href="/house-points" className="text-xs text-gray-400 hover:text-gray-600 font-medium flex items-center gap-1 transition-colors">
             Details <ArrowRight className="w-3 h-3" />
           </Link>
         </div>
-        <div className="divide-y divide-gray-50">
+        <div className="grid grid-cols-1 md:grid-cols-2">
           {fullLeaderboard.slice(0, 10).map((m, i) => {
             const isMe = m.id === profile.id
             const medals = ['🥇', '🥈', '🥉']
             return (
-              <div key={m.id} className={`flex items-center gap-4 px-5 py-3 ${isMe ? 'bg-gray-50' : ''}`}>
-                <span className="w-8 text-center shrink-0">
+              <div key={m.id} className={`flex items-center gap-4 px-6 py-3.5 transition-colors ${isMe ? 'bg-yellow-500/5' : 'hover:bg-black/[0.02]'}`}
+                style={{ borderBottom: '1px solid rgba(0,0,0,0.04)' }}>
+                <span className="w-7 text-center shrink-0">
                   {i < 3
-                    ? <span className="text-lg">{medals[i]}</span>
+                    ? <span className="text-base">{medals[i]}</span>
                     : <span className="text-xs font-bold text-gray-400">#{i + 1}</span>
                   }
                 </span>
@@ -268,12 +261,8 @@ export default async function HomePage() {
               </div>
             )
           })}
-          {fullLeaderboard.length === 0 && (
-            <div className="px-5 py-10 text-center text-sm text-gray-400">No points recorded yet.</div>
-          )}
         </div>
       </div>
-
     </div>
   )
 }

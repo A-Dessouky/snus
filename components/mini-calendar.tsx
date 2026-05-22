@@ -38,7 +38,7 @@ export function MiniCalendar({ events }: { events: Event[] }) {
   return (
     <div
       onClick={() => router.push('/social-calendar')}
-      className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 cursor-pointer hover:border-gray-300 hover:shadow-md transition-all"
+      className="glass-card p-5 cursor-pointer transition-all hover:shadow-xl"
     >
       <div className="flex items-center justify-between mb-3">
         <p className="font-semibold text-sm text-gray-900">{MONTHS[month]} {year}</p>
