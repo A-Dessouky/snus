@@ -6,7 +6,7 @@ import { useState } from 'react'
 import {
   Home, Megaphone, Calendar, CheckSquare, Trophy,
   CreditCard, FileText, Users, Database, Bell,
-  DollarSign, User, X, Menu, LogOut,
+  DollarSign, User, X, Menu, LogOut, Heart,
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import type { Profile, Role } from '@/lib/types'
@@ -26,6 +26,7 @@ const ALL_NAV = [
   { href: '/task-board',        label: 'Task Board',      icon: CheckSquare, roles: ['member','social_chair','rush_chair','exec'] },
   { href: '/house-points',      label: 'House Points',    icon: Trophy,      roles: ['member','social_chair','rush_chair','exec'] },
   { href: '/dues',              label: 'Dues',            icon: CreditCard,  roles: ['member','social_chair','rush_chair','exec'] },
+  { href: '/philanthropy',      label: 'Philanthropy',    icon: Heart,       roles: ['member','social_chair','rush_chair','exec'] },
   { href: '/documents',         label: 'Documents',       icon: FileText,    roles: ['member','social_chair','rush_chair','exec'] },
   { href: '/rush-database',     label: 'Rush Database',   icon: Database,    roles: ['rush_chair','exec'] },
   { href: '/finances',          label: 'Finances',        icon: DollarSign,  roles: ['social_chair','exec'] },

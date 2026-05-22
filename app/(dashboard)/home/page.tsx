@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { CheckSquare, Trophy, CreditCard, Bell, ArrowRight, Clock } from 'lucide-react'
+import { CheckSquare, Trophy, CreditCard, Bell, ArrowRight, Clock, Heart } from 'lucide-react'
 import type { Role } from '@/lib/types'
 
 const ROLE_LABELS: Record<Role, string> = {
@@ -51,6 +51,7 @@ export default async function HomePage() {
     { data: members },
     { data: dues },
     { data: notifications },
+    { data: philHours },
   ] = await Promise.all([
     supabase.from('announcements').select('*, author:profiles!created_by(full_name, email)').order('created_at', { ascending: false }).limit(3),
     supabase.from('events').select('*').gte('start_time', today.toISOString()).order('start_time').limit(1),
@@ -59,10 +60,13 @@ export default async function HomePage() {
     supabase.from('profiles').select('id, full_name, email'),
     supabase.from('dues').select('*').eq('member_id', profile.id).eq('paid', false),
     supabase.from('notifications').select('id').eq('user_id', profile.id).eq('read', false),
+    supabase.from('philanthropy_hours').select('hours_awarded').eq('member_id', profile.id).eq('status', 'approved'),
   ])
 
   const nextEvent = nextEvents?.[0]
   const unpaidDues = dues?.length ?? 0
+  const duesPaid = unpaidDues === 0
+  const myPhilHours = philHours?.reduce((s, r) => s + (r.hours_awarded ?? 0), 0) ?? 0
   const unreadNotifs = notifications?.length ?? 0
   const openTasks = myTasks?.length ?? 0
 
@@ -137,20 +141,39 @@ export default async function HomePage() {
 
       {/* Stats row */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {[
-          { href: '/house-points', icon: Trophy, value: myPoints, label: 'House Points', color: 'text-yellow-500', bg: 'bg-yellow-50' },
-          { href: '/task-board',   icon: CheckSquare, value: openTasks, label: 'Open Tasks', color: 'text-blue-500', bg: 'bg-blue-50' },
-          { href: '/dues',         icon: CreditCard, value: unpaidDues, label: 'Unpaid Dues', color: unpaidDues > 0 ? 'text-red-500' : 'text-green-500', bg: unpaidDues > 0 ? 'bg-red-50' : 'bg-green-50' },
-          { href: '/notifications',icon: Bell, value: unreadNotifs, label: 'Notifications', color: unreadNotifs > 0 ? 'text-yellow-500' : 'text-gray-400', bg: unreadNotifs > 0 ? 'bg-yellow-50' : 'bg-gray-50' },
-        ].map(({ href, icon: Icon, value, label, color, bg }) => (
-          <Link key={href} href={href} className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 hover:shadow-md hover:border-yellow-200 transition-all group">
-            <div className={`w-9 h-9 ${bg} rounded-lg flex items-center justify-center mb-3`}>
-              <Icon className={`w-5 h-5 ${color}`} />
-            </div>
-            <p className="text-2xl font-bold text-gray-900">{value}</p>
-            <p className="text-xs text-gray-500 mt-0.5">{label}</p>
-          </Link>
-        ))}
+        <Link href="/house-points" className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 hover:shadow-md hover:border-yellow-200 transition-all">
+          <div className="w-9 h-9 bg-yellow-50 rounded-lg flex items-center justify-center mb-3">
+            <Trophy className="w-5 h-5 text-yellow-500" />
+          </div>
+          <p className="text-2xl font-bold text-gray-900">{myPoints}</p>
+          <p className="text-xs text-gray-500 mt-0.5">House Points</p>
+        </Link>
+
+        <Link href="/philanthropy" className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 hover:shadow-md hover:border-yellow-200 transition-all">
+          <div className="w-9 h-9 bg-red-50 rounded-lg flex items-center justify-center mb-3">
+            <Heart className="w-5 h-5 text-red-400" />
+          </div>
+          <p className="text-2xl font-bold text-gray-900">{myPhilHours}h</p>
+          <p className="text-xs text-gray-500 mt-0.5">Philanthropy</p>
+        </Link>
+
+        <Link href="/dues" className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 hover:shadow-md hover:border-yellow-200 transition-all">
+          <div className={`w-9 h-9 rounded-lg flex items-center justify-center mb-3 ${duesPaid ? 'bg-green-50' : 'bg-red-50'}`}>
+            <CreditCard className={`w-5 h-5 ${duesPaid ? 'text-green-500' : 'text-red-500'}`} />
+          </div>
+          <p className={`text-2xl font-bold ${duesPaid ? 'text-green-600' : 'text-red-600'}`}>
+            {duesPaid ? 'Paid' : 'Unpaid'}
+          </p>
+          <p className="text-xs text-gray-500 mt-0.5">Dues Status</p>
+        </Link>
+
+        <Link href="/notifications" className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 hover:shadow-md hover:border-yellow-200 transition-all">
+          <div className={`w-9 h-9 rounded-lg flex items-center justify-center mb-3 ${unreadNotifs > 0 ? 'bg-yellow-50' : 'bg-gray-50'}`}>
+            <Bell className={`w-5 h-5 ${unreadNotifs > 0 ? 'text-yellow-500' : 'text-gray-400'}`} />
+          </div>
+          <p className="text-2xl font-bold text-gray-900">{unreadNotifs}</p>
+          <p className="text-xs text-gray-500 mt-0.5">Notifications</p>
+        </Link>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
