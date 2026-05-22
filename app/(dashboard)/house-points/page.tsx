@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import { Trophy } from 'lucide-react'
 import { SubmitRequestModal } from './submit-request-modal'
 import { ExecReviewCard } from './exec-review-card'
+import { AwardPointsModal } from './award-points-modal'
 
 export default async function HousePointsPage() {
   const supabase = await createClient()
@@ -40,7 +41,10 @@ export default async function HousePointsPage() {
     <div className="max-w-2xl mx-auto space-y-8">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-gray-900">House Points</h1>
-        <SubmitRequestModal profileId={profile.id} />
+        <div className="flex gap-2">
+          {isExec && <AwardPointsModal execProfileId={profile.id} members={members ?? []} />}
+          <SubmitRequestModal profileId={profile.id} />
+        </div>
       </div>
 
       {/* Exec: pending review queue */}

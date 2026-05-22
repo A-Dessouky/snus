@@ -39,6 +39,25 @@ export async function approvePointRequest(formData: FormData) {
   revalidatePath('/house-points')
 }
 
+export async function awardPoints(formData: FormData) {
+  const member_id = formData.get('member_id') as string
+  const points = parseInt(formData.get('points') as string) || 0
+  const description = (formData.get('description') as string) || 'Points awarded by exec'
+  const exec_id = formData.get('exec_id') as string
+
+  await adminClient().from('house_point_requests').insert({
+    member_id,
+    description,
+    points_requested: points,
+    points_awarded: points,
+    status: 'approved',
+    reviewed_by: exec_id,
+    reviewed_at: new Date().toISOString(),
+  })
+
+  revalidatePath('/house-points')
+}
+
 export async function denyPointRequest(id: string, reviewedBy: string) {
   await adminClient().from('house_point_requests').update({
     status: 'denied',
