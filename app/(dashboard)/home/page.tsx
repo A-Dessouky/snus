@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { Trophy, CreditCard, Heart, ArrowRight, Clock, MapPin, CheckSquare } from 'lucide-react'
+import { MiniCalendar } from '@/components/mini-calendar'
 import type { Role } from '@/lib/types'
 
 const ROLE_LABELS: Record<Role, string> = {
@@ -64,6 +65,7 @@ export default async function HomePage() {
     { data: members },
     { data: allDues },
     { data: philHours },
+    { data: monthEvents },
   ] = await Promise.all([
     supabase.from('announcements')
       .select('*, author:profiles!created_by(full_name, email)')
@@ -76,6 +78,7 @@ export default async function HomePage() {
     supabase.from('profiles').select('id, full_name, email'),
     supabase.from('dues').select('*').eq('member_id', profile.id).order('due_date'),
     supabase.from('philanthropy_hours').select('hours_awarded').eq('member_id', profile.id).eq('status', 'approved'),
+    supabase.from('events').select('id, title, start_time').gte('start_time', new Date(today.getFullYear(), today.getMonth(), 1).toISOString()).lt('start_time', new Date(today.getFullYear(), today.getMonth() + 1, 1).toISOString()),
   ])
 
   const openTasks = myTasks?.length ?? 0
@@ -190,8 +193,9 @@ export default async function HomePage() {
         </Link>
       </div>
 
-      {/* ── Recent announcements ── */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+      {/* ── Announcements + Mini Calendar ── */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="md:col-span-2 bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
         <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
           <h2 className="font-semibold text-gray-900">Announcements</h2>
           <Link href="/announcements" className="text-xs text-gray-500 hover:text-gray-700 font-medium flex items-center gap-1">
@@ -220,6 +224,12 @@ export default async function HomePage() {
         ) : (
           <div className="px-5 py-10 text-center text-sm text-gray-400">No announcements yet.</div>
         )}
+        </div>
+
+        {/* Mini calendar */}
+        <div className="md:col-span-1">
+          <MiniCalendar events={monthEvents ?? []} />
+        </div>
       </div>
 
       {/* ── Full-width leaderboard ── */}
