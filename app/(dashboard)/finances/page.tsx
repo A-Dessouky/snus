@@ -55,7 +55,7 @@ export default async function FinancesPage() {
 
       {/* Balance — exec only */}
       {isExec && (
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 md:grid-cols-3 gap-4">
           <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4">
             <p className="text-xs text-gray-500 uppercase tracking-wider">Balance</p>
             <p className={`text-2xl font-bold mt-1 ${balance >= 0 ? 'text-gray-900' : 'text-red-600'}`}>

@@ -37,7 +37,7 @@ export default async function RushDatabasePage() {
         </button>
       </div>
 
-      <div className="grid grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         {grouped.map(({ status, items }) => (
           <div key={status} className="space-y-3">
             <div className="flex items-center gap-2">

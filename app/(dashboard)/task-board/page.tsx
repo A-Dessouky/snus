@@ -32,7 +32,7 @@ export default async function TaskBoardPage() {
         {canCreate && <AddTaskModal profileId={profile.id} members={members ?? []} />}
       </div>
 
-      <div className="grid grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {COLUMNS.map(col => {
           const colTasks = tasks?.filter(t => t.status === col.status) ?? []
           return (

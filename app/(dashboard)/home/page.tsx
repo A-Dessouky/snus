@@ -136,7 +136,7 @@ export default async function HomePage() {
       </div>
 
       {/* Stats row */}
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
           { href: '/house-points', icon: Trophy, value: myPoints, label: 'House Points', color: 'text-yellow-500', bg: 'bg-yellow-50' },
           { href: '/task-board',   icon: CheckSquare, value: openTasks, label: 'Open Tasks', color: 'text-blue-500', bg: 'bg-blue-50' },
@@ -153,9 +153,9 @@ export default async function HomePage() {
         ))}
       </div>
 
-      <div className="grid grid-cols-5 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
         {/* Left column — next event + tasks */}
-        <div className="col-span-3 space-y-5">
+        <div className="col-span-1 md:col-span-3 space-y-5">
 
           {/* My open tasks */}
           <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
@@ -214,7 +214,7 @@ export default async function HomePage() {
         </div>
 
         {/* Right column — leaderboard */}
-        <div className="col-span-2 space-y-5">
+        <div className="col-span-1 md:col-span-2 space-y-5">
           <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
             <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
               <div className="flex items-center gap-2">
