@@ -100,7 +100,7 @@ export default async function HomePage() {
   const totalMembers = fullLeaderboard.length
 
   return (
-    <div className="w-full max-w-6xl space-y-6">
+    <div className="w-full space-y-6">
 
       {/* ── Hero ── */}
       <div className="relative bg-zinc-900 rounded-2xl overflow-hidden">
