@@ -94,7 +94,6 @@ export default async function HomePage() {
   allPointRequests?.forEach(r => {
     pointMap[r.member_id] = (pointMap[r.member_id] ?? 0) + (r.points_awarded ?? 0)
   })
-  const myPoints = pointMap[profile.id] ?? 0
   const fullLeaderboard = (members ?? [])
     .map(m => ({ ...m, points: pointMap[m.id] ?? 0 }))
     .sort((a, b) => b.points - a.points)
@@ -109,11 +108,11 @@ export default async function HomePage() {
         background: 'linear-gradient(135deg, #1a1a1f 0%, #111114 60%, #0d0d10 100%)',
         boxShadow: '0 24px 64px -12px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05)',
       }}>
-        <div className="px-7 pt-7 pb-5">
+        <div className="px-5 md:px-7 pt-5 md:pt-7 pb-3 md:pb-5">
           {/* Greeting */}
           <p className="text-zinc-500 text-xs">{dateStr}</p>
-          <h1 className="text-3xl font-bold text-white mt-1 tracking-tight">{greeting()}, {displayName}.</h1>
-          <div className="flex flex-wrap items-center gap-2 mt-3">
+          <h1 className="text-2xl md:text-3xl font-bold text-white mt-1 tracking-tight">{greeting()}, {displayName}.</h1>
+          <div className="flex flex-wrap items-center gap-2 mt-2 md:mt-3">
             <span className="bg-yellow-500/15 text-yellow-400 text-xs font-semibold px-3 py-1 rounded-full border border-yellow-500/20">
               {ROLE_LABELS[profile.role as Role]}
             </span>
@@ -128,14 +127,14 @@ export default async function HomePage() {
 
         {/* Upcoming events */}
         {upcomingEvents && upcomingEvents.length > 0 && (
-          <div className="px-7 pb-7 space-y-2">
-            <div style={{ height: '1px', background: 'rgba(255,255,255,0.06)' }} className="mb-4" />
-            <p className="text-zinc-600 text-xs uppercase tracking-widest font-semibold mb-3">Upcoming</p>
+          <div className="px-5 md:px-7 pb-5 md:pb-7 space-y-2">
+            <div style={{ height: '1px', background: 'rgba(255,255,255,0.06)' }} className="mb-3 md:mb-4" />
+            <p className="text-zinc-600 text-xs uppercase tracking-widest font-semibold mb-2 md:mb-3">Upcoming</p>
             {upcomingEvents.map((e, i) => (
               <Link
                 key={e.id}
                 href="/social-calendar"
-                className="flex items-center gap-4 rounded-2xl px-4 py-3 transition-colors"
+                className={`${i > 0 ? 'hidden md:flex' : 'flex'} items-center gap-4 rounded-2xl px-4 py-3 transition-colors`}
                 style={{
                   background: i === 0 ? 'rgba(255,255,255,0.07)' : 'transparent',
                   border: i === 0 ? '1px solid rgba(255,255,255,0.1)' : '1px solid transparent',
@@ -160,23 +159,23 @@ export default async function HomePage() {
       </div>
 
       {/* ── Stat cards ── */}
-      <div className="grid grid-cols-3 gap-4">
-        <Link href="/house-points" className="glass-card p-5 hover:shadow-xl transition-all">
-          <p className="text-xs text-gray-400 uppercase tracking-wider font-medium mb-2">Rank</p>
-          <p className="text-3xl font-bold text-gray-900">{myRank > 0 ? `#${myRank}` : '—'}</p>
-          <p className="text-xs text-gray-400 mt-1">of {totalMembers} members</p>
+      <div className="grid grid-cols-3 gap-2 md:gap-4">
+        <Link href="/house-points" className="glass-card p-3 md:p-5 hover:shadow-xl transition-all">
+          <p className="text-[10px] md:text-xs text-gray-400 uppercase tracking-wider font-medium mb-1 md:mb-2">Rank</p>
+          <p className="text-xl md:text-3xl font-bold text-gray-900">{myRank > 0 ? `#${myRank}` : '—'}</p>
+          <p className="text-[10px] md:text-xs text-gray-400 mt-0.5 md:mt-1">of {totalMembers}</p>
         </Link>
-        <Link href="/philanthropy" className="glass-card p-5 hover:shadow-xl transition-all">
-          <p className="text-xs text-gray-400 uppercase tracking-wider font-medium mb-2">Philanthropy</p>
-          <p className="text-3xl font-bold text-gray-900">{myPhilHours}<span className="text-lg text-gray-400">h</span></p>
-          <p className="text-xs text-gray-400 mt-1">hours logged</p>
+        <Link href="/philanthropy" className="glass-card p-3 md:p-5 hover:shadow-xl transition-all">
+          <p className="text-[10px] md:text-xs text-gray-400 uppercase tracking-wider font-medium mb-1 md:mb-2">Phil.</p>
+          <p className="text-xl md:text-3xl font-bold text-gray-900">{myPhilHours}<span className="text-sm md:text-lg text-gray-400">h</span></p>
+          <p className="text-[10px] md:text-xs text-gray-400 mt-0.5 md:mt-1">hours</p>
         </Link>
-        <Link href="/dues" className="glass-card p-5 hover:shadow-xl transition-all">
-          <p className="text-xs text-gray-400 uppercase tracking-wider font-medium mb-2">Dues</p>
-          <p className={`text-3xl font-bold mt-0 ${duesPaid ? 'text-green-600' : isOverdue ? 'text-red-600' : 'text-gray-900'}`}>
+        <Link href="/dues" className="glass-card p-3 md:p-5 hover:shadow-xl transition-all">
+          <p className="text-[10px] md:text-xs text-gray-400 uppercase tracking-wider font-medium mb-1 md:mb-2">Dues</p>
+          <p className={`text-xl md:text-3xl font-bold ${duesPaid ? 'text-green-600' : isOverdue ? 'text-red-600' : 'text-gray-900'}`}>
             {duesPaid ? 'Paid' : isOverdue ? 'Late' : 'Due'}
           </p>
-          <p className="text-xs text-gray-400 mt-1">{duesPaid ? 'All clear' : `By ${fmtDueDate(earliestDue!.due_date)}`}</p>
+          <p className="text-[10px] md:text-xs text-gray-400 mt-0.5 md:mt-1">{duesPaid ? 'Clear' : `By ${fmtDueDate(earliestDue!.due_date)}`}</p>
         </Link>
       </div>
 
@@ -213,7 +212,7 @@ export default async function HomePage() {
           )}
         </div>
 
-        <div className="md:col-span-1">
+        <div className="hidden md:block md:col-span-1">
           <MiniCalendar events={monthEvents ?? []} />
         </div>
       </div>
@@ -231,7 +230,7 @@ export default async function HomePage() {
             const isMe = m.id === profile.id
             const medals = ['🥇', '🥈', '🥉']
             return (
-              <div key={m.id} className={`flex items-center gap-4 px-6 py-3.5 transition-colors ${isMe ? 'bg-yellow-500/5' : 'hover:bg-black/[0.02]'}`}
+              <div key={m.id} className={`${i >= 5 ? 'hidden md:flex' : 'flex'} items-center gap-4 px-6 py-3.5 transition-colors ${isMe ? 'bg-yellow-500/5' : 'hover:bg-black/[0.02]'}`}
                 style={{ borderBottom: '1px solid rgba(0,0,0,0.04)' }}>
                 <span className="w-7 text-center shrink-0">
                   {i < 3
